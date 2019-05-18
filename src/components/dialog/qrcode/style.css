@@ -1,0 +1,15 @@
+img.vue-qrcode-image {
+  width: 230px;
+  height: 230px;
+}
+
+.vue-qrcode-warp {
+  text-align: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  min-width: 350px;
+}
+
+.vue-qrcode-warp .item {
+  display: inline-block;
+}
