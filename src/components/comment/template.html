@@ -2,8 +2,57 @@
   <div class="comment-input-area">
     <div class="comment-top">
       <div class="comment-title">参与评论</div>
-      <div class="comment-total">共0条</div>
+      <div class="comment-total">共<span class="total-number">{{total}}</span>条</div>
+    </div>
+    <div class="comment-middle">
+      <div class="comment-input-warp">
+        <textarea name="" id="" cols="30" rows="10" :placeholder="textarea.placeholder"></textarea>
+      </div>
+      <div class="comment-control-warp">
+        <div class="control-user">
+          <span class="user-avatar" :style="{'background-image': 'url('+ user.avatar +')'}"></span>
+          <span class="user-nickname">{{user.nickname}}</span>
+        </div>
+        <div class="control-submit">
+          <span class="input-total">7/1000</span>
+          <span class="btn-submit">
+            提交评论
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="comment-tips">
+      {{textarea.tips}}
     </div>
   </div>
-  <div class="comment-list"></div>
+  <div class="comment-content-area">
+    <div class="comment-top">
+      <div class="comment-title">评论区</div>
+    </div>
+    <div class="comment-list">
+      <ul>
+        <li v-for="(item, index) in commentsList" :key="index">
+          <div class="comment-list-item">
+            <div class="item-top">
+              <div class="item-avatar">
+                <span :style="{'background-image': 'url('+ item.userId.avatar +')'}"></span>
+              </div>
+              <div class="item-info">
+                <span class="nickname">{{item.userId.nickname}}</span>
+                <span class="time">· 23小时前</span>
+              </div>
+              <div class="item-right">
+                <span class="like-icon normal"></span>
+                <span class="like-number">{{item.likeTotal}}</span>
+                <a class="btn-reply" href="">回复</a>
+              </div>
+            </div>
+            <div class="comment-content">
+              {{item.content}}
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>

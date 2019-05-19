@@ -12,6 +12,7 @@ export default function asyncRequire(param, callback = () => {}) {
   array.forEach(function (item) {
     let url = item.url;
     let type = item.type;
+    let after = item.after || function () {}
     let loader = (url, callback) => {};
     switch (type) {
       case 'css': loader = cssLoader; break;
@@ -19,7 +20,11 @@ export default function asyncRequire(param, callback = () => {}) {
       default: loader = jsLoader;
     }
     loader(url, () => {
-      length--;if (length <= 0) callback()
+      length--;
+      if (length <= 0) {
+        after();
+        callback()
+      }
     });
   });
 }

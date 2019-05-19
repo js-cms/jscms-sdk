@@ -1,6 +1,6 @@
 export default {
   name: 'Qrcode',
-  data: function() {
+  data: function () {
     return {
       baseWidth: 240,
       warpStyle: {
@@ -12,7 +12,7 @@ export default {
     }
   },
   methods: {
-    show: function(options) {
+    show: function (options) {
       this.title = options.title;
       this.images = options.images;
       this.warpStyle.width = (options.images.length * this.baseWidth) + 'px';

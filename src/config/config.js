@@ -18,5 +18,10 @@ export default {
     type: 'js',
     version: 'latest',
     url: 'https://cdn.jsdelivr.net/npm/heyui'
+  }, {
+    variable: 'less',
+    type: 'js',
+    version: '3.9.0',
+    url: 'https://cdn.jsdelivr.net/npm/less@3.9.0/dist/less.min.js'
   }]
 }

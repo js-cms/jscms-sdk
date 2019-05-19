@@ -10,6 +10,7 @@ import vueComponentComment from './components/comment/controller';
 
 class JscmsSdk {
   constructor(options = {}) {
+    this.loadedCallbacks = [];
     this.loader = {
       css: cssLoader,
       js: jsLoader,
@@ -20,8 +21,11 @@ class JscmsSdk {
 
   _mountApi() {
     this.comment = {};
-    this.comment.render = selector => {
-      let container = this._createDiv('', document.querySelector(selector));
+    this.comment.render = (options = {}) => {
+      let { selector } = options;
+      let parentEl = document.querySelector(selector);
+      parentEl.innerHTML = '';
+      let container = this._createDiv('', parentEl);
       return this._initVue({
         component: vueComponentComment,
         selector: `#${container.id}`,
@@ -57,14 +61,20 @@ class JscmsSdk {
         el: selector
       }, component)
     );
+    window.less.refresh();
     return vueApp;
   }
 
   init(callback) {
+    if (typeof callback === 'function') this.loadedCallbacks.push(callback);
     asyncRequire(config.asyncDependence, () => {
       this._mountApi();
-      callback.call(this);
+      this.loadedCallbacks.forEach(cb => cb.call(this));
     });
+  }
+
+  loaded(callback) {
+    if (typeof callback === 'function') this.loadedCallbacks.push(callback);
   }
 }
 

@@ -9,8 +9,9 @@ for (const key in componentsObj) {
     const scriptBakPath = path.join(componentsBasePath, componentsObj[key], 'controller.bak.js');
     const templatePath = path.join(componentsBasePath, componentsObj[key], 'template.html');
     const scriptPath = path.join(componentsBasePath, componentsObj[key], 'controller.js');
-    const stylePath = path.join(componentsBasePath, componentsObj[key], 'style.css');
+    const stylePath = path.join(componentsBasePath, componentsObj[key], 'style.less');
     let template = fs.readFileSync(templatePath, 'utf-8');
+    template = template.replace(/[\r\n]/g, '');
     let script = fs.readFileSync(scriptPath, 'utf-8');
     let style = fs.readFileSync(stylePath, 'utf-8');
     fs.writeFileSync(scriptBakPath, script);
