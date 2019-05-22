@@ -4,7 +4,9 @@
  * @param {Function} callback  回调函数
  * @param {String} id 标签id
  */
-export default function (url = '', callback = () => {}, id = '') {
+export default function (options) {
+  const { url = '', callback = () => {}, id = '', variable = '' } = options;
+  if (window[variable]) typeof callback === 'function' ? callback() : void(0);
   let head = document.getElementsByTagName('head')[0];
   let script = document.createElement('script');
   script.type = 'text/javascript';

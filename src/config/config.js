@@ -9,6 +9,11 @@ export default {
     version: 'latst',
     url: 'https://cdn.jsdelivr.net/npm/heyui/themes/index.css'
   }, {
+    variable: 'jQuery',
+    type: 'js',
+    version: '3.4.1',
+    url: 'https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js'
+  }, {
     variable: 'Vue',
     type: 'js',
     version: 'latest',

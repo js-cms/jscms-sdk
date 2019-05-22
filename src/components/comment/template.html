@@ -6,7 +6,7 @@
     </div>
     <div class="comment-middle">
       <div class="comment-input-warp">
-        <textarea name="" id="" cols="30" rows="10" :placeholder="textarea.placeholder"></textarea>
+        <textarea v-model="content" name="content" id="commentContent" cols="30" rows="10" :placeholder="textarea.placeholder"></textarea>
       </div>
       <div class="comment-control-warp">
         <div class="control-user">
@@ -15,7 +15,7 @@
         </div>
         <div class="control-submit">
           <span class="input-total">7/1000</span>
-          <span class="btn-submit">
+          <span class="btn-submit" @click="submit">
             提交评论
           </span>
         </div>
@@ -47,9 +47,7 @@
                 <a class="btn-reply" href="">回复</a>
               </div>
             </div>
-            <div class="comment-content">
-              {{item.content}}
-            </div>
+            <div class="comment-content" v-html="item.htContent"></div>
           </div>
         </li>
       </ul>

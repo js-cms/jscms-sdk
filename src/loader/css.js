@@ -4,7 +4,8 @@
  * @param {function} callback 加载后回调函数
  * @param {string} id link标签id
  */
-export default function (url = '', callback = () => {}, id = '') {
+export default function (options) {
+  const { url = '', callback = () => {}, id = '' } = options;
   let node = document.createElement("link");
   let supportOnload = "onload" in node;
   // webkit旧内核做特殊处理

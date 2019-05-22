@@ -10,6 +10,7 @@ export default function asyncRequire(param, callback = () => {}) {
   let array = typeof param === 'string' ? [param] : param;
   let length = array.length;
   array.forEach(function (item) {
+    let variable = item.variable;
     let url = item.url;
     let type = item.type;
     let after = item.after || function () {}
@@ -19,11 +20,15 @@ export default function asyncRequire(param, callback = () => {}) {
       case 'vue': loader = vueLoader; break;
       default: loader = jsLoader;
     }
-    loader(url, () => {
-      length--;
-      if (length <= 0) {
-        after();
-        callback()
+    loader({
+      url,
+      variable,
+      callback: () => {
+        length--;
+        if (length <= 0) {
+          after();
+          callback()
+        }
       }
     });
   });
