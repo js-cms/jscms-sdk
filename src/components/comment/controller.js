@@ -57,6 +57,7 @@ export default {
           comment.userId = this.user;
           this.commentsList.unshift(comment);
           this.content = '';
+          this.total++;
         }
         this.$Message({
           type: res.code === 0 ? 'success' : 'error',

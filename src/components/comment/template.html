@@ -9,7 +9,10 @@
         <textarea v-model="content" name="content" id="commentContent" cols="30" rows="10" :placeholder="textarea.placeholder"></textarea>
       </div>
       <div class="comment-control-warp">
-        <div class="control-user">
+        <div class="control-login">
+          <a href="">登陆 </a>后参与评论
+        </div>
+        <div class="control-user" v-show="false">
           <span class="user-avatar" :style="{'background-image': 'url('+ user.avatar +')'}"></span>
           <span class="user-nickname">{{user.nickname}}</span>
         </div>
@@ -30,7 +33,7 @@
       <div class="comment-title">评论区</div>
     </div>
     <div class="comment-list">
-      <ul>
+      <ul v-if="commentsList.length">
         <li v-for="(item, index) in commentsList" :key="index">
           <div class="comment-list-item">
             <div class="item-top">
@@ -51,6 +54,9 @@
           </div>
         </li>
       </ul>
+      <div class="no-comment" v-if="commentsList.length === 0">
+        期待你的评论。
+      </div>
     </div>
   </div>
 </div>
