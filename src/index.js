@@ -4,6 +4,7 @@ import cssLoader from './loader/css';
 import jsLoader from './loader/js';
 import vueLoader from './loader/vue';
 import styleLoader from './loader/style';
+import store from './util/store';
 
 import vueComponentDialogQrcode from './components/dialog/qrcode/controller';
 import vueComponentComment from './components/comment/controller';
@@ -75,6 +76,10 @@ class JscmsSdk {
 
   loaded(callback) {
     if (typeof callback === 'function') this.loadedCallbacks.push(callback);
+  }
+
+  store(key, value) {
+    return store(key, value);
   }
 }
 

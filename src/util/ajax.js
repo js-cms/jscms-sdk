@@ -1,5 +1,5 @@
 /**
- * 请求数据
+ * 原生请求数据
  * @param {Object} options 
  */
 export default function ajax(options) {

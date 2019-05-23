@@ -1,3 +1,5 @@
+import req from '../../util/request';
+
 export default {
   name: 'Comment',
   data: function () {
@@ -12,7 +14,8 @@ export default {
       },
       content: '',
       user: {
-        _id: '5c9648d94a4cf500067b6770',
+        token: '',
+        _id: '',
         avatar: `${__JSCMS_CONSTANT__.CONSTANT.THEME_STATIC}/images/default-avatar.jpg`,
         nickname: '匿名用户',
         token: ''
@@ -29,8 +32,9 @@ export default {
      * 加载数据
      */
     loadList() {
-      const $ = window.jQuery;
-      $.get(`http://127.0.0.1:7011/api/front/comment/list?numberId=${this.article.numberId}`, (res) => {
+      req.get(`http://127.0.0.1:7011/api/front/comment/list?numberId=${this.article.numberId}`)
+      .then((res) => {
+        console.log('res', res);
         this.commentsList = res.data.list;
         this.total = res.data.total;
       });
@@ -47,11 +51,10 @@ export default {
         });
         return;
       }
-      $.post(`http://127.0.0.1:7011/api/front/comment/create`, {
-        userId: this.user._id,
+      req.post(`http://127.0.0.1:7011/api/front/comment/create`, {
         articleNumberId: this.article.numberId,
         mdContent: this.content
-      }, (res) => {
+      }).then(res => {
         if (res.code === 0) {
           let comment = res.data;
           comment.userId = this.user;
