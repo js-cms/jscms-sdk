@@ -33,8 +33,8 @@
       <div class="comment-title">评论区</div>
     </div>
     <div class="comment-list">
-      <ul v-if="commentsList.length">
-        <li v-for="(item, index) in commentsList" :key="index">
+      <ul class="comment-list-ul" v-if="commentsList.length">
+        <li class="comment-list-li" v-for="(item, index) in commentsList" :key="index">
           <div class="comment-list-item">
             <div class="item-top">
               <div class="item-avatar">
@@ -51,6 +51,12 @@
               </div>
             </div>
             <div class="comment-content" v-html="item.htContent"></div>
+            <div class="comment-children">
+              <ul class="comment-children-ul">
+                <li class="comment-children-ul">
+                </li>
+              </ul>
+            </div>
           </div>
         </li>
       </ul>
