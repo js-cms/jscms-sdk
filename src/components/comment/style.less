@@ -2,7 +2,9 @@
   @mainColor: #4285f4;
   @mainDeepColor: #326ac5;
   @fontColor: #262626;
-
+  // @mainColor: #45b984;
+  // @mainDeepColor: #398d67;
+  
   .clear() {
     content: "";
     display: block;
@@ -12,6 +14,15 @@
   }
 
   width: 100%;
+
+  a {
+    text-decoration: none;
+    color: @mainColor;
+
+    &:hover {
+      color: @mainDeepColor;
+    }
+  }
 
   .comment-title {
     margin-left: 2px;
@@ -232,21 +243,20 @@
                   margin-right: 2px;
                   color: #787878;
                 }
-
-                .btn-reply {
-                  color: @mainColor;
-                  cursor: pointer;
-                }
               }
             }
 
             .comment-content {
+              word-wrap: break-word;
+              word-break: normal;
               position: relative;
               margin-left: 50px;
               top: -10px;
               color: @fontColor;
 
               p {
+                word-wrap: break-word;
+                word-break: normal;
                 margin: 0px;
                 padding: 0px;
               }
@@ -260,6 +270,35 @@
         padding: 30px;
         text-align: center;
       }
+    }
+
+    .comment-more {
+      padding: 10px;
+      padding-top: 0px;
+      text-align: center;
+
+      .btn-more {
+        display: inline-block;
+        border-radius: 20px;
+        width:  100px;
+        height: 30px;
+        line-height: 29px;
+        border: 1px solid @mainColor;
+        color: @mainColor;
+        font-size: 14px;
+        transition: all 0.2s;
+        cursor: pointer;
+
+        &:hover {
+          background-color: @mainColor;
+          color: #fff;
+        }
+      }
+    }
+
+    .loading-warp() {
+      min-height: 250px;
+      width: 100%;
     }
   }
 }

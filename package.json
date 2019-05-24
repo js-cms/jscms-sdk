@@ -27,7 +27,8 @@
   "scripts": {
     "lint": "eslint src test",
     "test": "rollup -c && jest",
-    "build": "node ./script/buildvue.js && rollup -c && node ./script/recovervue.js && node ./script/copytotest.js"
+    "build": "node ./script/buildvue.js && rollup -c && node ./script/recovervue.js && node ./script/copytotest.js",
+    "totheme": "node ./script/totheme.js"
   },
   "dependencies": {
     "loose-envify": "^1.4.0",

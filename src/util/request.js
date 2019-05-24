@@ -34,13 +34,14 @@ export default {
       }
     }
   },
-  get(url) {
+  get(url, params) {
     return {
       then(callback = ()=>{}) {
         request({
           type: 'get',
-          url: url,
-          callback: callback
+          url,
+          params,
+          callback
         });
       }
     }
