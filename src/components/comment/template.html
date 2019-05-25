@@ -1,12 +1,13 @@
-<div class="jscms-comment">
-  <div class="comment-input-area">
+<div class="jscms-comment" id="jscmsComment" ref="jscmsComment">
+  <div class="comment-input-area" ref="commentInpuArea">
     <div class="comment-top">
       <div class="comment-title">参与评论</div>
       <div class="comment-total">共<span class="total-number">{{total}}</span>条</div>
     </div>
     <div class="comment-middle">
       <div class="comment-input-warp">
-        <textarea v-model="form.mdContent" name="content" id="commentContent" cols="30" rows="10" :placeholder="config.placeholder"></textarea>
+        <textarea v-model="form.mdContent" name="content" id="commentContent" cols="30" rows="10"
+          :placeholder="config.placeholder"></textarea>
       </div>
       <div class="comment-control-warp">
         <div class="control-login" v-show="config.boolCommentLogin===true">
@@ -15,6 +16,10 @@
         <div class="control-user" v-show="config.boolCommentLogin===false">
           <span class="user-avatar" :style="{'background-image': 'url('+ config.currentUser.avatar +')'}"></span>
           <span class="user-nickname">{{config.currentUser.nickname}}</span>
+        </div>
+        <div class="control-user-reply" v-show="reply.user.id">
+          回复：{{reply.user.nickname}}
+          <i class="reply-close" @click="replyClear"></i>
         </div>
         <div class="control-submit">
           <span class="input-total">{{form.mdContent.length}}/1000</span>
@@ -30,32 +35,57 @@
   </div>
   <div class="comment-content-area">
     <div class="comment-top">
-      <div class="comment-title">评论区</div>
+      <div class="comment-title">评论区域</div>
     </div>
-    <div class="comment-list">
+    <div class="comment-list" ref="commentList">
       <ul class="comment-list-ul" v-if="commentsList.length">
         <li class="comment-list-li" v-for="(item, index) in commentsList" :key="index">
-          <div class="comment-list-item">
+          <div class="comment-list-item" :id="'commentItem_' + index" :ref="'commentItem_' + index">
             <div class="item-top">
               <div class="item-avatar">
-                <span :style="{'background-image': 'url('+ item.userId.avatar +')'}"></span>
+                <span :style="{'background-image': 'url('+ item.userAuthor.avatar +')'}"></span>
               </div>
               <div class="item-info">
-                <span class="nickname">{{item.userId.nickname}}</span>
+                <span class="nickname">{{item.userAuthor.nickname}}</span>
                 <span class="time">· 23小时前</span>
+                <span class="id">· {{item.numberId}}楼</span>
               </div>
               <div class="item-right">
-                <span class="like-icon normal"></span>
-                <span class="like-number">{{item.likeTotal}}</span>
-                <a class="btn-reply" href="">回复</a>
+                <span class="like-icon" :class="{'normal': !item.liked, 'liked': item.liked}"></span>
+                <span class="like-number">{{item.likeUserIds.length}}</span>
+                <a class="btn-reply" href="javascript:void(0);" @click="replyHandle(item, 2, index, 'commentItem_' + index)">回复</a>
               </div>
             </div>
             <div class="comment-content" v-html="item.htContent"></div>
-            <div class="comment-children">
-              <ul class="comment-children-ul">
-                <li class="comment-children-ul">
+            <div class="comment-children" v-if="item.children.list.length">
+              <ul class="comment-list-ul">
+                <li class="comment-list-li" v-for="(subItem, idx) in item.children.list" :key="idx">
+                  <div class="comment-list-item" :id="'commentChildItem_' + index + '_' + idx" :ref="'commentChildItem_' + index + '_' + idx">
+                    <div class="item-top">
+                      <div class="item-avatar">
+                        <span :style="{'background-image': 'url('+ subItem.userAuthor.avatar +')'}"></span>
+                      </div>
+                      <div class="item-info">
+                        <span class="nickname">{{subItem.userAuthor.nickname}}</span>
+                        <span class="time">· 23小时前</span>
+                        <span class="id">· {{subItem.numberId}}楼</span>
+                      </div>
+                      <div class="item-right">
+                        <span class="like-icon" :class="{'normal': !subItem.liked, 'liked': subItem.liked}"></span>
+                        <span class="like-number">{{subItem.likeUserIds.length}}</span>
+                        <a class="btn-reply" href="javascript:void(0);" @click="replyHandle(subItem, 3, index, 'commentChildItem_' + index + '_' + idx)">回复</a>
+                      </div>
+                    </div>
+                    <div class="comment-content" v-html="subItem.htContent"></div>
+                  </div>
                 </li>
               </ul>
+              <div class="btn-more-child" v-show="item.children.total > 3 && item.children.list.length === 3">
+                <a href="javascript:void(0);" @click="loadMoreChild(item, index)">
+                  <span v-show="item.children.total===999">加载中...</span>
+                  <span v-show="item.children.total<999">查看全部{{item.children.total}}条</span>
+                </a>
+              </div>
             </div>
           </div>
         </li>
