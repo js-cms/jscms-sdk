@@ -1,6 +1,7 @@
 import req from '../../util/request';
-import style from '../../loader/style';
 import getScrollTop from '../../util/getScrollTop';
+import beautifyDate from '../../util/beautifyDate';
+import style from '../../loader/style';
 
 export default {
   name: 'Comment',
@@ -32,6 +33,7 @@ export default {
         level: 1,
         user: {},
         commentId: '',
+        commentNumberId: 0,
         ref: ''
       },
       commentsList: [],
@@ -51,11 +53,24 @@ export default {
   mounted() {
     req.get(`http://127.0.0.1:7011/api/front/comment/config`).then(res => {
       this.config = res.data;
-      this.config.currentUser._id = '5c9648d94a4cf500067b6769';
       this.loadList();
     });
   },
   methods: {
+
+    /**
+     * 数据清洗
+     */
+    dataHandle(item) {
+      let userId = this.config.currentUser._id;
+      item.liked = false;
+      item.ftime = beautifyDate(item.createTime);
+      if (userId) {
+        if (item.likeUserIds.includes(userId)) {
+          item.liked = true;
+        }
+      }
+    },
 
     /**
      * 加载数据
@@ -65,25 +80,15 @@ export default {
       /**
        * 数据清洗
        */
-      const dataHandle = list => {
-        let userId = this.config.currentUser._id;
-        if (userId) {
-          list.forEach(item => {
-            item.liked = false;
-            if (item.likeUserIds.includes(userId)) {
-              item.liked = true;
-            }
-            if (item.children && item.children.list) {
-              item.children.list.forEach(subItem => {
-                subItem.liked = false;
-                if (subItem.likeUserIds.includes(userId)) {
-                  subItem.liked = true;
-                }
-              });
-            }
-          });
-        }
-        console.log(list);
+      const handle = list => {
+        list.forEach(item => {
+          this.dataHandle(item);
+          if (item.children && item.children.list) {
+            item.children.list.forEach(subItem => {
+              this.dataHandle(subItem);
+            });
+          }
+        });
         return list;
       }
 
@@ -98,7 +103,7 @@ export default {
               });
               return;
             }
-            let list = dataHandle(res.data.list);
+            let list = handle(res.data.list);
             let length = this.commentsList.length;
             if (length) {
               this.commentsList = this.commentsList.concat(list);
@@ -129,7 +134,7 @@ export default {
     /**
      * 加载全部的子评论
      */
-    loadMoreChild(comment, parentIndex = 0) {
+    loadMoreChild(comment, callback = function() {}) {
       if (comment.children.total === 999) return;
       comment.children.total = 999;
       req.get(`http://127.0.0.1:7011/api/front/comment/childlist`, {
@@ -138,9 +143,12 @@ export default {
         pageNumber: 1,
         pageSize: 999
       }).then(res => {
-        setTimeout(()=>{
-          comment.children.list = res.data.list;
+        setTimeout(() => {
+          let list = res.data.list;
+          list.forEach(item => this.dataHandle(item));
+          comment.children.list = list;
           comment.children.total = res.data.total;
+          this.$nextTick(callback);
         }, 500);
       });
     },
@@ -184,30 +192,33 @@ export default {
             nickname: this.config.currentUser.nickname,
             avatar: this.config.currentUser.avatar
           };
-          if (this.reply.user.id) {
-            comment.userReplied = {
-              id: this.reply.user._id,
-              nickname: this.reply.user.nickname,
-              avatar: this.reply.user.avatar
-            }
-          }
           comment.children = {
             list: [],
             total: 0
           };
+          this.dataHandle(comment);
           if (this.reply.level === 1) {
             this.commentsList.unshift(comment);
             this.total++;
             this.toTop(this.$refs.commentList);
+            this.reset();
           } else if (this.reply.level === 2 || this.reply.level === 3) {
-            let target = this.$refs[this.reply.ref];
-            if (target.length) target = target[0];
-            this.commentsList[this.reply.parentIndex].children.list.push(comment);
-            this.$nextTick(()=>{
-              this.toTop(target.parentNode.nextSibling);
+            let comment = this.commentsList[this.reply.parentIndex];
+            this.loadMoreChild(comment, () => {
+              let target = this.$refs[this.reply.ref];
+              if (target && target.length) target = target[0];
+              let el = {};
+              let tempArr = [];
+              if (this.reply.level === 2) {
+                tempArr = target.querySelectorAll('.comment-list-li');
+              } else if (this.reply.level === 3) {
+                tempArr = target.parentNode.parentNode.querySelectorAll('.comment-list-li');
+              }
+              el = tempArr[tempArr.length - 1];
+              this.$nextTick(() => this.toTop(el));
+              this.reset();
             });
           }
-          this.reset();
         }
         this.$Message({
           type: res.code === 0 ? 'success' : 'error',
@@ -220,11 +231,7 @@ export default {
      * 重置
      */
     reset() {
-      this.reply.parentIndex = 0;
-      this.reply.level = 1;
-      this.reply.user = {};
-      this.reply.commentId = '';
-      this.reply.ref = '';
+      this.replyClear();
       this.form.mdContent = '';
     },
 
@@ -237,9 +244,13 @@ export default {
       this.reply.level = level;
       this.reply.user = item.userAuthor;
       this.reply.commentId = item._id;
+      this.reply.commentNumberId = item.numberId;
       this.reply.ref = ref;
     },
 
+    /**
+     * 操作滚动条
+     */
     toTop(el) {
       if (!el) return;
       if (el.length) el = el[0];
@@ -248,10 +259,41 @@ export default {
     },
 
     /**
+     * 点赞钩子
+     */
+    like(comment) {
+      let params = {
+        commentId: comment._id
+      };
+      if (comment.liked === true) { // 取消点赞
+        req.get(`http://127.0.0.1:7011/api/front/comment/unlike`, params)
+          .then(res => {
+            if (res.code === 0) {
+              comment.liked = false;
+              comment.likeUserIds = res.data.likeUserIds;
+            }
+          });
+      } else { // 进行点赞
+        req.get(`http://127.0.0.1:7011/api/front/comment/like`, params)
+          .then(res => {
+            if (res.code === 0) {
+              comment.liked = true;
+              comment.likeUserIds = res.data.likeUserIds;
+            }
+          });
+      }
+    },
+
+    /**
      * 清除回复
      */
     replyClear() {
+      this.reply.parentIndex = 0;
+      this.reply.level = 1;
       this.reply.user = {};
+      this.reply.commentId = '';
+      this.reply.ref = '';
+      this.reply.commentNumberId = 0;
     }
   }
 }
