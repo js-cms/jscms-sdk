@@ -21,7 +21,7 @@
         </div>
         <div class="comment-control-warp">
           <div class="control-login" v-show="commentConfig.boolCommentLogin===true">
-            <a href="javascript:void(0);">登陆</a>后参与评论
+            <a href="javascript:void(0);" @click="showLogin()">登陆</a>后参与评论
           </div>
           <div class="control-user" v-show="commentConfig.boolCommentLogin===false">
             <span

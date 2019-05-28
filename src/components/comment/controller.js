@@ -59,6 +59,12 @@ export default {
     });
   },
   methods: {
+    /**
+     * 显示登陆弹窗
+     */
+    showLogin() {
+      window.jscmssdk.dialog.auth.show();
+    },
 
     /**
      * 数据清洗
