@@ -1,4 +1,4 @@
-import req from '@/util/request';
+import { req } from '@/util/request';
 import util from '@/util/util.js';
 
 export default {
@@ -18,7 +18,10 @@ export default {
         numberId: util.g().article.numberId,
         mdContent: ''
       },
-      config: {
+      commentConfig: {
+        boolCommentLogin: false,
+        placeholder: '',
+        tips: '',
         currentUser: {}
       },
       params: {
@@ -42,15 +45,16 @@ export default {
     };
   },
   created() {
-    style(`
+    util.addStyle(`
       .h-loading .h-loading-circular>svg .circle {
         stroke: ${this.theme.mainColor} !important;
       }
     `);
   },
   mounted() {
+    document.title = "66dev";
     req.get(`http://127.0.0.1:7011/api/front/comment/config`).then(res => {
-      this.config = res.data;
+      this.commentConfig = res.data.data;
       this.loadList();
     });
   },
@@ -60,9 +64,9 @@ export default {
      * 数据清洗
      */
     dataHandle(item) {
-      let userId = this.config.currentUser._id;
+      let userId = this.commentConfig.currentUser._id;
       item.liked = false;
-      item.ftime = beautifyDate(item.createTime);
+      item.ftime = util.beautifyDate(item.createTime);
       if (userId) {
         if (item.likeUserIds.includes(userId)) {
           item.liked = true;
@@ -94,21 +98,22 @@ export default {
       req.get(`http://127.0.0.1:7011/api/front/comment/list`, this.params)
         .then(res => {
           setTimeout(() => {
-            if (res.code !== 0) {
+            if (res.data.code !== 0) {
               this.$Message({
                 type: 'error',
                 text: `数据加载失败`
               });
               return;
             }
-            let list = handle(res.data.list);
+            console.log('res.data.data.list', res.data.data.list);
+            let list = handle(res.data.data.list);
             let length = this.commentsList.length;
             if (length) {
               this.commentsList = this.commentsList.concat(list);
             } else {
               this.commentsList = list;
             }
-            this.total = res.data.total;
+            this.total = res.data.data.total;
             length = this.commentsList.length;
             let total = this.total;
             if (length >= total) {
@@ -142,10 +147,10 @@ export default {
         pageSize: 999
       }).then(res => {
         setTimeout(() => {
-          let list = res.data.list;
+          let list = res.data.data.list;
           list.forEach(item => this.dataHandle(item));
           comment.children.list = list;
-          comment.children.total = res.data.total;
+          comment.children.total = res.data.data.total;
           this.$nextTick(callback);
         }, 500);
       });
@@ -183,12 +188,12 @@ export default {
         commentId: this.reply.commentId
       });
       req.post(`http://127.0.0.1:7011/api/front/comment/create`, params).then(res => {
-        if (res.code === 0) {
-          let comment = res.data;
+        if (res.data.code === 0) {
+          let comment = res.data.data;
           comment.userAuthor = {
-            id: this.config.currentUser._id,
-            nickname: this.config.currentUser.nickname,
-            avatar: this.config.currentUser.avatar
+            id: this.commentConfig.currentUser._id,
+            nickname: this.commentConfig.currentUser.nickname,
+            avatar: this.commentConfig.currentUser.avatar
           };
           comment.children = {
             list: [],
@@ -219,8 +224,8 @@ export default {
           }
         }
         this.$Message({
-          type: res.code === 0 ? 'success' : 'error',
-          text: res.msg
+          type: res.data.code === 0 ? 'success' : 'error',
+          text: res.data.msg
         });
       });
     },
@@ -252,7 +257,7 @@ export default {
     toTop(el) {
       if (!el) return;
       if (el.length) el = el[0];
-      let top = el.getBoundingClientRect().top + getScrollTop();
+      let top = el.getBoundingClientRect().top + util.getScrollTop();
       window.scrollTo(0, top);
     },
 
@@ -266,17 +271,17 @@ export default {
       if (comment.liked === true) { // 取消点赞
         req.get(`http://127.0.0.1:7011/api/front/comment/unlike`, params)
           .then(res => {
-            if (res.code === 0) {
+            if (res.data.code === 0) {
               comment.liked = false;
-              comment.likeUserIds = res.data.likeUserIds;
+              comment.likeUserIds = res.data.data.likeUserIds;
             }
           });
       } else { // 进行点赞
         req.get(`http://127.0.0.1:7011/api/front/comment/like`, params)
           .then(res => {
-            if (res.code === 0) {
+            if (res.data.code === 0) {
               comment.liked = true;
-              comment.likeUserIds = res.data.likeUserIds;
+              comment.likeUserIds = res.data.data.likeUserIds;
             }
           });
       }

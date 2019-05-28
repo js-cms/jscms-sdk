@@ -13,7 +13,12 @@
     visibility: hidden;
   }
 
+  * {
+    box-sizing: border-box;
+  }
+
   width: 100%;
+  font-size: 14px;
 
   a {
     text-decoration: none;
@@ -22,6 +27,10 @@
     &:hover {
       color: @mainDeepColor;
     }
+  }
+
+  textarea, input {
+    outline:  none;
   }
 
   .comment-title {
@@ -40,7 +49,6 @@
 
     .comment-top {
       width: 100%;
-      box-sizing: border-box;
 
       &::after {
         .clear()
@@ -181,7 +189,6 @@
 
     .comment-top {
       width: 100%;
-      box-sizing: border-box;
 
       &::after {
         .clear()
@@ -299,13 +306,6 @@
               .comment-reply-user-nickname {
                 color: #787878;
               }
-
-              p {
-                word-wrap: break-word;
-                word-break: normal;
-                margin: 0px;
-                padding: 0px;
-              }
             }
 
             .comment-children {
@@ -314,7 +314,6 @@
               width: calc(~"100% - 50px");
               margin-left: 50px;
               padding: 0 15px;
-              box-sizing: border-box;
 
               &:before {
                 -webkit-transform: rotate(45deg);

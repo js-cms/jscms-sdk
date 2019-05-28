@@ -33,20 +33,21 @@
       }
     })(window);
   </script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
+  <link rel="stylesheet" href="./jscmssdk.css" />
 </head>
 <body>
   <div class="main">
-    评论加载中...
+    <div id="commentWarp">
+      评论加载中...
+    </div>
   </div>
-  <script>document.write("<script src='./jscmssdk.min.js?" + Math.random() +"'><\/script>")</script>
+  <script>document.write("<script src='./jscmssdk.umd.js?" + Math.random() +"'><\/script>")</script>
   <script>
     (function(window) {
-      window.jscmssdk = new JscmsSdk();
-      jscmssdk.init();
-      jscmssdk.loaded(function() {
-        let comment = this.comment.render({
-          selector: '.main'
-        });
+      let jscmssdk = window.jscmssdk;
+      jscmssdk.comment.render({
+        selector: '#commentWarp'
       });
     })(window);
   </script>
