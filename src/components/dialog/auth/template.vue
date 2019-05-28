@@ -12,13 +12,15 @@
             <input type="text" v-model="form.password" placeholder="请输入密码" />
           </div>
         </div>
-        <div class="forget-pass-warp">
-          <a href="javascript:void(0);">忘记密码了</a>
+        <div class="other-operation">
+          <span class="reg-warp">
+            还没有账号？<a href="javascript:void(0);">去注册</a>
+          </span>
+          <span class="forget-pass-warp">
+            <a href="javascript:void(0);">忘记密码了</a>
+          </span>
         </div>
         <button class="h-btn h-btn-l h-btn-primary h-btn-block btn-login">登陆</button>
-        <div class="reg-warp">
-          还没有账号？<a href="javascript:void(0);">去注册</a>
-        </div>
         <div class="line"></div>
         <div class="other-login">
           社交账号登陆
