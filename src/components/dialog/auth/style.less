@@ -12,30 +12,9 @@
     padding-top: 10px;
     box-sizing: border-box;
 
-    .form {
-      .form-item {
-        padding-top: 5px;
-        padding-bottom: 5px;
-  
-        input {
-          height: auto;
-          padding: 11px 0px;
-          border: none;
-          border-bottom: 1px solid #eeeeee;
-          font-size: 14px;
-          width: 100%;
-          border-radius: 2px;
-
-          &:focus {
-            box-shadow: none;
-          }
-        }
-      }
-    }
-
     .other-operation {
       font-size: 14px;
-      padding: 10px 0px;
+      padding: 10px 8px;
       margin-bottom: 10px;
       color: #a7a7a7;
 
@@ -53,11 +32,13 @@
 
       .forget-pass-warp {
         float: right;
+
       }
   
     }
 
-    .btn-login {
+    .btn-warp {
+      padding: 2px;
     }
 
     .line {
@@ -69,7 +50,44 @@
     }
 
     .other-login {
-      padding: 20px;
+      margin-top: 10px;
+
+      .tips {
+        color: #8b9196;
+      }
+
+      .svg-icon-layout {
+        margin-top: 10px;
+        padding-top: 10px;
+        width: 100%;
+
+        &::after {
+          content: "";
+          display: block;
+          height: 0;
+          clear: both;
+          visibility: hidden;
+        }
+
+        .svg-icon {
+          width: 33%;
+          text-align: center;
+          float: left;
+
+          svg {
+            cursor: pointer;
+            border-radius: 60%;
+            background-color: #f4f8fb;
+            padding: 10px;
+            transition: all 0.2s;
+
+            &:hover {
+              background-color: #dfeaf2;
+            }
+          }
+        }
+      }
+      
     }
 
   }

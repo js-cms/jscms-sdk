@@ -1,20 +1,46 @@
+import util from '@/util/util.js';
+import formLogin from './components/form-login';
+
+import iconSvgWeibo from '@/components/svg/IconWeibo';
+import iconSvgGithub from '@/components/svg/IconGithub';
+import iconSvgWechat from '@/components/svg/IconWechat';
+
 export default {
+  components: {
+    formLogin,
+    iconSvgWeibo,
+    iconSvgGithub,
+    iconSvgWechat
+  },
   data() {
     return {
       isShow: false,
+      type: 1, //1、登陆框 2、注册框、3、密码找回框
       title: '登陆',
+      subtitle: util.g().CONSTANT.SUBTITLE,
       form: {
-        login: '',
+        email: '',
         password: ''
       }
     }
   },
+  mounted() {
+    this.init();
+  },
   methods: {
+    /**
+     * 初始
+     */
+    init() {
+      if (this.type === 1) {
+        this.title = `登陆 - ${this.subtitle}`;
+      }
+    },
     /**
      * 登陆
      */
     login() {
-      
+      console.log(this.form);
     },
     /**
      * 注册

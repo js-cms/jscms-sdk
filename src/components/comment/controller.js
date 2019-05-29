@@ -52,7 +52,6 @@ export default {
     `);
   },
   mounted() {
-    document.title = "66dev";
     req.get(`http://127.0.0.1:7011/api/front/comment/config`).then(res => {
       this.commentConfig = res.data.data;
       this.loadList();
