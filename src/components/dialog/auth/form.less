@@ -4,6 +4,14 @@
     padding-top: 5px;
     padding-bottom: 5px;
 
+    &::after {
+      content: "";
+      display: block;
+      height: 0;
+      clear: both;
+      visibility: hidden;
+    }
+
     i {
       color: #494949;
       position: absolute;
@@ -29,6 +37,17 @@
       &:focus {
         box-shadow: none;
       }
+    }
+
+    .form-item-vercode {
+      float: left;
+      width: 60%;
+    }
+
+    .btn-vercode {
+      padding-top: 3px;
+      float: left;
+      width: 40%;
     }
   }
 }

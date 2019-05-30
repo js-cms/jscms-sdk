@@ -19,7 +19,7 @@
         </div>
         <div class="btn-warp">
           <button class="h-btn h-btn-l h-btn-primary h-btn-block btn-login" @click="login">
-            <i class="fa fa-connectdevelop"></i> 登陆
+            {{type===1 ? '登陆' : '注册'}}
           </button>
         </div>
         <div class="line"></div>

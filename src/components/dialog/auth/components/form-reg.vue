@@ -10,7 +10,16 @@
     </div>
     <div class="form-item">
       <i class="fa fa-unlock-alt"></i>
-      <input type="password" v-model="form.password" placeholder="再次输入密码">
+      <input type="password" v-model="form.againPassword" placeholder="再次输入密码">
+    </div>
+    <div class="form-item">
+      <div class="form-item-vercode">
+        <i class="fa fa-unlock-alt"></i>
+        <input type="text" v-model="form.vercode" placeholder="邮箱验证码">
+      </div>
+      <div class="btn-vercode">
+        <button class="h-btn h-btn-l h-btn-primary h-btn-block">获取验证码</button>
+      </div>
     </div>
   </div>
 </template>
@@ -24,7 +33,8 @@ export default {
       form: {
         email: '',
         password: '',
-        
+        againPassword: '',
+        vercode: ''
       }
     };
   },
