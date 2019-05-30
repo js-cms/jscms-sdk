@@ -5,9 +5,13 @@
       <div slot="header" class="title">{{title}}</div>
       <div class="body">
         <form-login v-if="type===1"></form-login>
+        <form-reg v-if="type===2"></form-reg>
         <div class="other-operation">
-          <span class="reg-warp">
-            还没有账号？<a href="javascript:void(0);">去注册</a>
+          <span class="reg-warp" v-if="type===1">
+            还没有账号？<a href="javascript:void(0);" @click="type=2">去注册</a>
+          </span>
+          <span class="reg-warp" v-if="type===2">
+            已有账号？<a href="javascript:void(0);" @click="type=1">去登陆</a>
           </span>
           <span class="forget-pass-warp">
             <a href="javascript:void(0);">忘记密码了？</a>
