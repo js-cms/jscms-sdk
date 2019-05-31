@@ -1,8 +1,13 @@
 <template>
 <div class="auth">
-  <Modal v-model="isShow" className="">
+  <j-popup :show="pupup.show">
     <div class="auth-container">
-      <div slot="header" class="title">{{title}}</div>
+      <div class="header">
+        <span class="title">{{title}}</span>
+        <span class="auth-close" @click="()=>{pupup.show=false;}">
+          <icon-svg-close></icon-svg-close>
+        </span>
+      </div>
       <div class="body">
         <form-login v-if="type===1"></form-login>
         <form-reg v-if="type===2"></form-reg>
@@ -18,11 +23,8 @@
           </span>
         </div>
         <div class="btn-warp">
-          <button class="h-btn h-btn-l h-btn-primary h-btn-block btn-login" @click="login">
-            {{type===1 ? '登陆' : '注册'}}
-          </button>
+          <j-button :name="type===1 ? '立即登陆' : '注册'" :sty="{'width': '100%'}" @click="submit"></j-button>
         </div>
-        <div class="line"></div>
         <div class="other-login">
           <div class="tips">
             第三方账号登录：
@@ -41,7 +43,7 @@
         </div>
       </div>
     </div>
-  </Modal>
+  </j-popup>
 </div>
 </template>
 

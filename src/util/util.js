@@ -98,14 +98,14 @@ util.dateFormat = function (datetime, fmt) {
 /**
  * 生存随机id
  */
-util.id = function() {
+util.id = function () {
   return `id_${Math.random().toString(36).substr(2)}`;
 }
 
 /**
  * 创建新的div
  */
-util.createDiv = function(id = '', parent = document.body) {
+util.createDiv = function (id = '', parent = document.body) {
   let div = document.createElement('div');
   div.id = id || util.id();
   parent.appendChild(div);
@@ -120,6 +120,43 @@ util.g = function () {
     window.__JSCMS_CONSTANT__ = {};
   }
   return window.__JSCMS_CONSTANT__;
+}
+
+/** 封装cookie操作 */
+util.cookie = {};
+/**
+ * 设置cookie
+ */
+util.cookie.set = function (name, value, expires, domain, path, secure) {
+  let cookieText = "";
+  cookieText += encodeURIComponent(name) + "=" + encodeURIComponent(value);
+  if (expires instanceof Date) cookieText += "; expires=" + expires.toGMTString();
+  if (path) cookieText += "; path=" + path;
+  if (domain) cookieText += "; domain=" + domain;
+  if (secure) cookieText += "; secure";
+  document.cookie = cookieText;
+};
+/**
+ * 获取cookie
+ */
+util.cookie.get = function (name) {
+  let cookieName = encodeURIComponent(name) + "=",
+    cookieStart = document.cookie.indexOf(cookieName),
+    cookieValue = "";
+  if (cookieStart > -1) {
+    let cookieEnd = document.cookie.indexOf(";", cookieStart);
+    if (cookieEnd == -1) {
+      cookieEnd = document.cookie.length;
+    }
+    cookieValue = decodeURIComponent(document.cookie.substring(cookieStart + cookieName.length, cookieEnd));
+  }
+  return cookieValue;
+};
+/**
+ * 删除cookie
+ */
+util.cookie.remove = function (name, domain, path, secure) {
+  this.set(name, "", Date(0), domain, path, secure);
 }
 
 export default util;

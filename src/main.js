@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import HeyUI from 'heyui';
-import 'heyui/themes/index.css';
+import '@/style/theme.less';
 import comment from '@/components/comment/index';
 import dialogQrcode from '@/components/dialog/qrcode/index';
 import dialogAuth from '@/components/dialog/auth/index';

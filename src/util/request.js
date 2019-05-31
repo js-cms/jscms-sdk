@@ -1,10 +1,11 @@
 import fly from 'flyio';
 import storejs from 'store';
+import env from './env';
 
 const proApi = '/';
-const devApi = '';
+const devApi = 'http://127.0.0.1:7011';
 
-let _baseURL = process.env.NODE_ENV === 'development' ? devApi : proApi;
+let _baseURL = env() === 'development' ? devApi : proApi;
 
 fly.interceptors.request.use((request) => {
   const token = storejs.get('token');

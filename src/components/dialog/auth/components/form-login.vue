@@ -1,20 +1,23 @@
 <template>
   <div class="form">
     <div class="form-item">
-      <i class="fa fa-user-o"></i>
-      <input type="text" v-model="form.email" placeholder="请输入邮箱">
+      <j-input name="username" iClass="fa fa-envelope-o" p="请输入邮箱" v-model="form.email"></j-input>
     </div>
     <div class="form-item">
-      <i class="fa fa-unlock-alt"></i>
-      <input type="password" v-model="form.password" placeholder="请输入密码">
+      <j-input name="password" iClass="fa fa-key" p="请输入密码" type="password" v-model="form.password"></j-input>
     </div>
   </div>
 </template>
 
 <script>
+import jInput from '@/ui/input';
+
 import _ from 'lodash';
 
 export default {
+  components: {
+    jInput
+  },
   data() {
     return {
       form: {

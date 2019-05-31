@@ -5,11 +5,6 @@ export default {
   name: 'Comment',
   data: function () {
     return {
-      theme: {
-        fontColor: '#262626',
-        mainColor: '#4285f4',
-        mainDeepColor: '#326ac5'
-      },
       article: {
         id: util.g().article.id,
         numberId: util.g().article.numberId
@@ -44,15 +39,8 @@ export default {
       total: 0
     };
   },
-  created() {
-    util.addStyle(`
-      .h-loading .h-loading-circular>svg .circle {
-        stroke: ${this.theme.mainColor} !important;
-      }
-    `);
-  },
   mounted() {
-    req.get(`http://127.0.0.1:7011/api/front/comment/config`).then(res => {
+    req.get(`/api/front/comment/config`).then(res => {
       this.commentConfig = res.data.data;
       this.loadList();
     });
@@ -100,7 +88,7 @@ export default {
       }
 
       this.loading = true;
-      req.get(`http://127.0.0.1:7011/api/front/comment/list`, this.params)
+      req.get(`/api/front/comment/list`, this.params)
         .then(res => {
           setTimeout(() => {
             if (res.data.code !== 0) {
@@ -145,7 +133,7 @@ export default {
     loadMoreChild(comment, callback = function() {}) {
       if (comment.children.total === 999) return;
       comment.children.total = 999;
-      req.get(`http://127.0.0.1:7011/api/front/comment/childlist`, {
+      req.get(`/api/front/comment/childlist`, {
         commentId: comment._id,
         numberId: this.params.numberId,
         pageNumber: 1,
@@ -192,7 +180,7 @@ export default {
         repliedUserId: this.reply.user.id,
         commentId: this.reply.commentId
       });
-      req.post(`http://127.0.0.1:7011/api/front/comment/create`, params).then(res => {
+      req.post(`/api/front/comment/create`, params).then(res => {
         if (res.data.code === 0) {
           let comment = res.data.data;
           comment.userAuthor = {
@@ -274,7 +262,7 @@ export default {
         commentId: comment._id
       };
       if (comment.liked === true) { // 取消点赞
-        req.get(`http://127.0.0.1:7011/api/front/comment/unlike`, params)
+        req.get(`/api/front/comment/unlike`, params)
           .then(res => {
             if (res.data.code === 0) {
               comment.liked = false;
@@ -282,7 +270,7 @@ export default {
             }
           });
       } else { // 进行点赞
-        req.get(`http://127.0.0.1:7011/api/front/comment/like`, params)
+        req.get(`/api/front/comment/like`, params)
           .then(res => {
             if (res.data.code === 0) {
               comment.liked = true;

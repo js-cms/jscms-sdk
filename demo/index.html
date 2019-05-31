@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Jscms Sdk Test Page</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css">
   <style type="text/less">
     body {
       padding: 0px;
@@ -25,7 +26,8 @@
     (function (window) {
       if (!window.__JSCMS_CONSTANT__) window.__JSCMS_CONSTANT__ = {};
       window.__JSCMS_CONSTANT__.CONSTANT = {
-        THEME_STATIC: ''
+        THEME_STATIC: '',
+        SUBTITLE: 'jscms'
       };
       window.__JSCMS_CONSTANT__.article = {
         id: 'xxx',
@@ -34,7 +36,7 @@
     })(window);
   </script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.min.js"></script>
-  <link rel="stylesheet" href="./jscmssdk.css" />
+  <link rel="stylesheet" href="./jscmssdk/jscmssdk.css" />
 </head>
 <body>
   <div class="main">
@@ -42,7 +44,7 @@
       评论加载中...
     </div>
   </div>
-  <script>document.write("<script src='./jscmssdk.umd.js?" + Math.random() +"'><\/script>")</script>
+  <script>document.write("<script src='./jscmssdk/jscmssdk.umd.js?" + Math.random() +"'><\/script>")</script>
   <script>
     (function(window) {
       let jscmssdk = window.jscmssdk;
