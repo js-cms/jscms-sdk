@@ -1,5 +1,5 @@
 import fly from 'flyio';
-import storejs from 'store';
+import store from 'store';
 import env from './env';
 
 const proApi = '/';
@@ -8,7 +8,7 @@ const devApi = 'http://127.0.0.1:7011';
 let _baseURL = env() === 'development' ? devApi : proApi;
 
 fly.interceptors.request.use((request) => {
-  const token = storejs.get('token');
+  const token = store.get('token');
   // 给所有请求添加自定义header
   request.headers['authorization'] = token
   request.baseURL = baseURL

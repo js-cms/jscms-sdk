@@ -20,10 +20,10 @@
           ></textarea>
         </div>
         <div class="comment-control-warp">
-          <div class="control-login" v-show="commentConfig.boolCommentLogin===true">
+          <div class="control-login" v-show="!commentConfig.isShowUser">
             <a href="javascript:void(0);" @click="showLogin()">登陆</a> 后参与评论
           </div>
-          <div class="control-user" v-show="commentConfig.boolCommentLogin===false">
+          <div class="control-user" v-show="commentConfig.isShowUser">
             <span
               class="user-avatar"
               :style="{'background-image': 'url('+ commentConfig.currentUser.avatar +')'}"

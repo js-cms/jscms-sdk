@@ -38,7 +38,8 @@ export default {
       form: {
         email: '',
         password: ''
-      }
+      },
+      callback: function () {}
     }
   },
   mounted() {
@@ -91,6 +92,11 @@ export default {
       store.set('uuid', userInfo._id);
       store.set('userInfo', userInfo);
       util.cookie.set('token', token);
+      this.callback({
+        type: 1,
+        data: result.data
+      });
+      this.close();
     },
 
     /**
@@ -102,14 +108,32 @@ export default {
     /**
      * 显示弹窗
      */
-    show() {
+    show(callback = function(){}) {
+      this.callback = callback;
       this.pupup.show = true;
     },
     /**
      * 关闭弹窗
      */
     close() {
-
+      this.reset();
+    },
+    /**
+     * 重置
+     */
+    reset() {
+      this.isShow = false;
+      this.type = 1; //1、登陆框 2、注册框、3、密码找回框
+      this.title = '登陆';
+      this.subtitle = util.g().CONSTANT.SUBTITLE;
+      this.pupup = {
+        show: false
+      };
+      this.form = {
+        email: '',
+        password: ''
+      };
+      this.callback = function () {};
     }
   }
 }

@@ -14,6 +14,9 @@ export default {
         mdContent: ''
       },
       commentConfig: {
+        isShowUser: false,
+        isAnonymous: false,
+        isLogin: false,
         boolCommentLogin: false,
         placeholder: '',
         tips: '',
@@ -40,17 +43,35 @@ export default {
     };
   },
   mounted() {
-    req.get(`/api/front/comment/config`).then(res => {
-      this.commentConfig = res.data.data;
-      this.loadList();
-    });
+    this.init();
   },
   methods: {
+    /**
+     * 初始化函数
+     */
+    async init() {
+      await this.loadConfig();
+      this.loadList();
+    },
+
+    /**
+     * 加载配置
+     */
+    async loadConfig() {
+      let res = await req.get(`/api/front/comment/config`);
+      this.commentConfig = res.data.data;
+    },
+
     /**
      * 显示登陆弹窗
      */
     showLogin() {
-      window.jscmssdk.dialog.auth.show();
+      window.jscmssdk.dialog.auth.show(async result => {
+        if (result.type === 1) {
+          console.log('load config');
+          await this.loadConfig();
+        }
+      });
     },
 
     /**
