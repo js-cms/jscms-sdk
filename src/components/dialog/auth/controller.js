@@ -102,8 +102,55 @@ export default {
     /**
      * 注册
      */
-    register() {
-
+    async register() {
+      let checkReg = () => {
+        if (!this.form.email) {
+          return {
+            code: 1,
+            msg: '邮箱不能为空'
+          }
+        } else if (!this.form.password) {
+          return {
+            code: 1,
+            msg: '密码不能为空'
+          }
+        } else if (!this.form.againPassword) {
+          return {
+            code: 1,
+            msg: '再次输入的密码不能为空'
+          }
+        } else if (!this.form.vercode) {
+          return {
+            code: 1,
+            msg: '验证码不能为空'
+          }
+        } else if (this.form.password !== this.form.againPassword) {
+          return {
+            code: 1,
+            msg: '两次输入的密码不相同'
+          }
+        }
+        return { code: 0 };
+      }
+      let checkRes = checkReg();
+      if (checkRes.code === 1) {
+        this.$Message({
+          type: 'error',
+          text: checkRes.msg, 
+          timeout: 3000
+        });
+        return;
+      };
+      let res = await req.post('/api/front/user/register', this.form);
+      let result = res.data;
+      this.$Message({
+        type: result.code === 0 ? 'success' : 'error',
+        text: result.msg, 
+        timeout: 3000
+      });
+      if (result.code === 0) {
+        this.type = 1;
+      }
     },
     /**
      * 显示弹窗
