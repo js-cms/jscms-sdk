@@ -35,6 +35,7 @@ export default {
       pupup: {
         show: false
       },
+      isRember: false,
       form: {
         email: '',
         password: ''
@@ -51,6 +52,7 @@ export default {
     }
   },
   methods: {
+
     /**
      * 初始
      */
@@ -152,19 +154,23 @@ export default {
         this.type = 1;
       }
     },
+    
     /**
      * 显示弹窗
      */
-    show(callback = function(){}) {
+    show(type = 1, callback = function(){}) {
+      this.type = type;
       this.callback = callback;
       this.pupup.show = true;
     },
+
     /**
      * 关闭弹窗
      */
     close() {
       this.reset();
     },
+
     /**
      * 重置
      */

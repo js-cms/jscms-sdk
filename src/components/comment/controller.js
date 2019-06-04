@@ -66,7 +66,7 @@ export default {
      * 显示登陆弹窗
      */
     showLogin() {
-      window.jscmssdk.dialog.auth.show(async result => {
+      window.jscmssdk.dialog.auth.show(1, async result => {
         if (result.type === 1) {
           console.log('load config');
           await this.loadConfig();
