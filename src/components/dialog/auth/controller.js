@@ -31,6 +31,7 @@ export default {
       isShow: false,
       type: 1, //1、登陆框 2、注册框、3、密码找回框
       title: '登陆',
+      typeName: '手机',
       subtitle: util.g().CONSTANT.SUBTITLE,
       pupup: {
         show: false

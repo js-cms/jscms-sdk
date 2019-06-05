@@ -1,7 +1,7 @@
 <template>
   <div class="form">
     <div class="form-item">
-      <j-input name="username" iClass="fa fa-envelope-o" p="请输入邮箱" v-model="form.email"></j-input>
+      <j-input name="username" iClass="fa fa-envelope-o" :p="'请输入' + typeName" v-model="form.email"></j-input>
     </div>
     <div class="form-item">
       <j-input name="password" iClass="fa fa-key" p="请输入密码" type="password" v-model="form.password"></j-input>
@@ -15,6 +15,12 @@ import jInput from '@/ui/input';
 import _ from 'lodash';
 
 export default {
+  props: {
+    typeName: {
+      type: String,
+      default: '邮箱'
+    }
+  },
   components: {
     jInput
   },

@@ -19,8 +19,8 @@
           </span>
         </div>
         <div class="body">
-          <form-login v-if="type===1"></form-login>
-          <form-reg v-if="type===2"></form-reg>
+          <form-login v-if="type===1" :typeName="typeName"></form-login>
+          <form-reg v-if="type===2" :typeName="typeName"></form-reg>
           <div class="other-operation">
             <span class="reg-warp">
               <label for="keep" class="keep-label">
