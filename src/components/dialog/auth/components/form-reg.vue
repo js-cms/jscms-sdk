@@ -14,13 +14,18 @@
         <j-input name="vercode" iClass="fa fa-envelope" :p="typeName + '验证码'" v-model="form.vercode"></j-input>
       </div>
       <div class="btn-vercode">
-        <j-button type="white" name="获取验证码" :sty="{'width': '100%'}" :btnSty="{height: '42px'}"></j-button>
+        <j-button type="white" name="获取验证码" :sty="{'width': '100%'}" :btnSty="{height: '42px'}" @click="sendVerCode"></j-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  req,
+  baseURL
+} from '@/util/request';
+
 import _ from 'lodash';
 import jInput from '@/ui/input';
 import jButton from '@/ui/button';
@@ -53,7 +58,21 @@ export default {
       },
       deep: true
     }
-  }
+  },
+  methods: {
+    async sendVerCode() {
+      if (!this.form.email) {
+        this.$Message({
+          type: 'error',
+          text: `${this.typeName}不能为空`,
+          timeout: 2000
+        });
+        return;
+      }
+      let res = await req.post('/api/front/mail/sendVerCode', {email: this.form.email});
+      console.log(res);
+    }
+  },
 };
 </script>
 
